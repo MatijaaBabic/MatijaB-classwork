@@ -21,6 +21,9 @@ RED = (255, 0, 0)
 BLUE = (115, 181, 239)
 YELLOWISH = (234, 226, 61)
 BEIGE = (220, 213, 185)
+BROWN = (196, 164, 132)
+DARKBROWN = (92, 64, 51)
+CYAN = (0, 255, 255)
  
 pygame.init()
  
@@ -58,7 +61,12 @@ while not done:
     pygame.draw.rect(screen,GREEN,[0,300,1000,200],0)
     pygame.draw.rect(screen,BLUE,[0,0,1000,300],0)
     pygame.draw.ellipse(screen, YELLOWISH, [600,20,60,60], 0)
-    pygame.draw.rect(screen,BEIGE,[250,300,100,200],0)
+    pygame.draw.rect(screen,BEIGE,[275,350,75,200],0)
+    pygame.draw.rect(screen,BROWN,[230,175,200,200],0)
+    pygame.draw.rect(screen,DARKBROWN,[275,275,75,100],0)
+    pygame.draw.ellipse(screen, BLACK, [330,325,10,10], 0)
+    #pygame.draw.rect(screen,DARKBROWN,[275,275,75,100],0)
+    pygame.draw.rect(screen,CYAN,[370,200,50,50],0)
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
  
