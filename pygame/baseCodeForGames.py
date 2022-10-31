@@ -24,7 +24,8 @@ BEIGE = (220, 213, 185)
 BROWN = (196, 164, 132)
 DARKBROWN = (92, 64, 51)
 CYAN = (0, 255, 255)
- 
+x = 600
+xoffset = 50
 pygame.init()
  
 # Set the width and height of the screen [width, height]
@@ -60,7 +61,11 @@ while not done:
     # --- Drawing code should go here
     pygame.draw.rect(screen,GREEN,[0,300,1000,200],0)
     pygame.draw.rect(screen,BLUE,[0,0,1000,300],0)
-    pygame.draw.ellipse(screen, YELLOWISH, [600,20,60,60], 0)
+    if x < 1 or x > 699:
+        xoffset = xoffset * - 1
+    x = x + xoffset
+    
+    pygame.draw.ellipse(screen, YELLOWISH, [x,20,60,60], 0)
     pygame.draw.rect(screen,BEIGE,[275,350,75,200],0)
     pygame.draw.rect(screen,BROWN,[230,175,200,200],0)
     pygame.draw.rect(screen,DARKBROWN,[275,275,75,100],0)
