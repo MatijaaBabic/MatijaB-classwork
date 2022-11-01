@@ -1,5 +1,3 @@
-import pygame
-
 """
  Pygame base template for opening a window
  
@@ -19,13 +17,11 @@ WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 BLUE = (115, 181, 239)
-YELLOWISH = (234, 226, 61)
-BEIGE = (220, 213, 185)
-BROWN = (196, 164, 132)
-DARKBROWN = (92, 64, 51)
-CYAN = (0, 255, 255)
-x = 600
+YELLOW = (234, 226, 61)
+x = 350
+y = 250
 xoffset = 2
+yoffset = 3
 pygame.init()
  
 # Set the width and height of the screen [width, height]
@@ -57,21 +53,16 @@ while not done:
     # If you want a background image, replace this clear with blit'ing the
     # background image.
     screen.fill(WHITE)
- 
-    # --- Drawing code should go here
-    pygame.draw.rect(screen,GREEN,[0,300,1000,200],0)
-    pygame.draw.rect(screen,BLUE,[0,0,1000,300],0)
-    if x < 1 or x > 640:
+    if x < 1 or x > 650:
         xoffset = xoffset * (- 1)
     x = x + xoffset
-    
-    pygame.draw.ellipse(screen, YELLOWISH, [x,20,60,60], 0)
-    pygame.draw.rect(screen,BEIGE,[275,350,75,200],0)
-    pygame.draw.rect(screen,BROWN,[230,175,200,200],0)
-    pygame.draw.rect(screen,DARKBROWN,[275,275,75,100],0)
-    pygame.draw.ellipse(screen, BLACK, [330,325,10,10], 0)
-    #pygame.draw.rect(screen,DARKBROWN,[275,275,75,100],0)
-    pygame.draw.rect(screen,CYAN,[370,200,50,50],0)
+    if y < 1 or y > 450:
+        yoffset = yoffset * (-1)
+    y = y + yoffset
+ 
+    # --- Drawing code should go here
+    pygame.draw.rect(screen, BLUE, [0,0,700,500], 0)
+    pygame.draw.ellipse(screen, YELLOW, [x,y,50,50], 0)
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
  
