@@ -22,8 +22,8 @@ x = 350
 y = 250
 xoffset = 2
 yoffset = 3
-y_speed = 1
-x_coord1 = 1
+y_speed = 0
+x_coord1 = 0
 y_coord1 = 200
 x_coord2 = 690
 y_coord2 = 200
@@ -57,10 +57,6 @@ while not done:
             elif event.key == pygame.K_DOWN:
                 y_speed = 3
             y_coord1 += y_speed  #code to make the rectangle actually move (so y_coord1 will have y_speed added to it and then the value is assigned back to y_coord1)
-            if y_coord1 < 1:
-                y_coord1 = 1
-            elif y_coord1 > 450:
-                y_coord1 = 450
         #This is the code for when the key isn't pressed        
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
@@ -78,7 +74,7 @@ while not done:
     if x < 1 or x > 670:
         x = 350
         y = 250
-    if ((x == x_coord1 + 20) and ((y < (y_coord1 + 100 + 50)) or (y > (y_coord1 + 100 - 50)))) or ((x == x_coord2 + 20)):
+    if ((x == x_coord1 + 10) and ((y < (y_coord1 + 100 + 30)) and (y > (y_coord1 - 30)))) or ((x == x_coord2 - 30) and ((y < (y_coord2 + 100 + 30)) and (y > (y_coord2 - 30)))):
         xoffset = xoffset * (- 1)
     x = x + xoffset
     if y < 1 or y > 470:
