@@ -10,7 +10,7 @@ def enQueue(q, item):
     #endif
 #endprocedure
 
-def deQueue(q, item):
+def deQueue(q):
     if not is_empty(q):
         return q.pop(0)
     else:
@@ -18,4 +18,22 @@ def deQueue(q, item):
     #endif
 #endprocedure
 
-def isEmpty(q)
+def isEmpty(q):
+    if len(q) == 0:
+        return; "Empty"
+    else:
+        return; "Not Empty"
+    #endif
+#endprocedure
+
+def isFull(q):
+    if len(q) == maxSize:
+        return; "Full"
+    else:
+        return; "Not full"
+    #endif
+#endprocedure
+
+enQueue(queue, "socks")
+print(queue)
+
