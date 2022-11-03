@@ -52,9 +52,9 @@ while not done:
     # --- Game logic should go here
         #This is code for the rectangle to move up or down depending on the key pressed
         elif event.type == pygame.KEYDOWN:     #we can use while if we want it to move for as long as the key is presed
-            if event.key == pygame.K_UP:
+            if event.key == pygame.K_UP and y_coord1 > y_speed:
                 y_speed = -3
-            elif event.key == pygame.K_DOWN:
+            elif event.key == pygame.K_DOWN and y_coord1 < 500 - y_speed - 100:
                 y_speed = 3
             y_coord1 += y_speed  #code to make the rectangle actually move (so y_coord1 will have y_speed added to it and then the value is assigned back to y_coord1)
         #This is the code for when the key isn't pressed        
@@ -74,6 +74,8 @@ while not done:
     if x < 1 or x > 670:
         x = 350
         y = 250
+        y_coord1 = 200
+        y_coord2 = 200
     if ((x == x_coord1 + 10) and ((y < (y_coord1 + 100 + 30)) and (y > (y_coord1 - 30)))) or ((x == x_coord2 - 30) and ((y < (y_coord2 + 100 + 30)) and (y > (y_coord2 - 30)))):
         xoffset = xoffset * (- 1)
     x = x + xoffset
