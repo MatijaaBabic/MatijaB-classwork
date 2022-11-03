@@ -2,38 +2,34 @@ queue = []
 size = len(queue)
 maxSize = 5
 
+def isEmpty(q):
+    return len(q) == 0
+#endprocedure
+
+def isFull(q):
+    return len(q) == maxSize
+#endprocedure
+
 def enQueue(q, item):
-    if not is_full(q):
+    if not isFull(q):
         q.append(item)
     else:
-        return; "Full"
+        print("Full")
     #endif
 #endprocedure
 
 def deQueue(q):
-    if not is_empty(q):
-        return q.pop(0)
+    if not isEmpty(q):
+        return q.pop()
     else:
-        return; "Empty"
-    #endif
-#endprocedure
-
-def isEmpty(q):
-    if len(q) == 0:
-        return; "Empty"
-    else:
-        return; "Not Empty"
-    #endif
-#endprocedure
-
-def isFull(q):
-    if len(q) == maxSize:
-        return; "Full"
-    else:
-        return; "Not full"
+        print("Empty")
     #endif
 #endprocedure
 
 enQueue(queue, "socks")
 print(queue)
+deQueue(queue)
+print(queue)
+print(isFull(queue))
+print(isEmpty(queue))
 

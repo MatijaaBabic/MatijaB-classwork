@@ -23,6 +23,7 @@ y = 250
 xoffset = 2
 yoffset = 3
 y_speed = 0
+y_speed2 = 0
 x_coord1 = 0
 y_coord1 = 200
 x_coord2 = 690
@@ -47,21 +48,29 @@ while not done:
     # --- Main event loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            done = True
- 
+            done = True    
     # --- Game logic should go here
         #This is code for the rectangle to move up or down depending on the key pressed
         elif event.type == pygame.KEYDOWN:     #we can use while if we want it to move for as long as the key is presed
-            if event.key == pygame.K_UP and y_coord1 > y_speed:
+            if event.key == pygame.K_UP:
                 y_speed = -3
-            elif event.key == pygame.K_DOWN and y_coord1 < 500 - y_speed - 100:
+            elif event.key == pygame.K_DOWN:
                 y_speed = 3
-            y_coord1 += y_speed  #code to make the rectangle actually move (so y_coord1 will have y_speed added to it and then the value is assigned back to y_coord1)
+            y_coord1 += y_speed #code to make the rectangle actually move (so y_coord1 will have y_speed added to it and then the value is assigned back to y_coord1)
         #This is the code for when the key isn't pressed        
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                 y_speed = 0
-            
+        if event.type == pygame.KEYDOWN:     #we can use while if we want it to move for as long as the key is presed
+            if event.key == pygame.K_w:
+                y_speed2 = -10
+            elif event.key == pygame.K_s:
+                y_speed2 = 10
+            y_coord2 += y_speed2  
+        #This is the code for when the key isn't pressed        
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_w or event.key == pygame.K_s:
+                y_speed2 = 0 
     # --- Screen-clearing code goes here
  
     # Here, we clear the screen to white. Don't put other drawing commands
@@ -76,7 +85,7 @@ while not done:
         y = 250
         y_coord1 = 200
         y_coord2 = 200
-    if ((x == x_coord1 + 10) and ((y < (y_coord1 + 100 + 30)) and (y > (y_coord1 - 30)))) or ((x == x_coord2 - 30) and ((y < (y_coord2 + 100 + 30)) and (y > (y_coord2 - 30)))):
+    if ((x == x_coord1 + 10) and ((y < (y_coord1 + 100 + 20)) and (y > (y_coord1 - 20)))) or ((x == x_coord2 - 30) and ((y < (y_coord2 + 100 + 20)) and (y > (y_coord2 - 20)))):
         xoffset = xoffset * (- 1)
     x = x + xoffset
     if y < 1 or y > 470:
@@ -93,6 +102,9 @@ while not done:
  
     # --- Limit to 60 frames per second
     clock.tick(60)
- 
+    if y_coord1 < 0:
+        y_coord1 = 0
+    if y_coord1 > 400:
+        y_coord1 = 400
 # Close the window and quit.
 pygame.quit()
