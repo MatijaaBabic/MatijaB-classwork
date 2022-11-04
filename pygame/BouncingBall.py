@@ -63,9 +63,9 @@ while not done:
                 y_speed = 0
         if event.type == pygame.KEYDOWN:     #we can use while if we want it to move for as long as the key is presed
             if event.key == pygame.K_w:
-                y_speed2 = -10
+                y_speed2 = -20
             elif event.key == pygame.K_s:
-                y_speed2 = 10
+                y_speed2 = 20
             y_coord2 += y_speed2  
         #This is the code for when the key isn't pressed        
         elif event.type == pygame.KEYUP:
