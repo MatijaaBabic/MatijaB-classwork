@@ -56,21 +56,18 @@ while not done:
                 y_speed = -3
             elif event.key == pygame.K_DOWN:
                 y_speed = 3
+            elif event.key == pygame.K_w:
+                y_speed2 = -3
+            elif event.key == pygame.K_s:
+                y_speed2 = 3
             y_coord1 += y_speed #code to make the rectangle actually move (so y_coord1 will have y_speed added to it and then the value is assigned back to y_coord1)
+            y_coord2 += y_speed2
         #This is the code for when the key isn't pressed        
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                 y_speed = 0
-        if event.type == pygame.KEYDOWN:     #we can use while if we want it to move for as long as the key is presed
-            if event.key == pygame.K_w:
-                y_speed2 = -20
-            elif event.key == pygame.K_s:
-                y_speed2 = 20
-            y_coord2 += y_speed2  
-        #This is the code for when the key isn't pressed        
-        elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_w or event.key == pygame.K_s:
-                y_speed2 = 0 
+            elif event.key == pygame.K_w or event.key == pygame.K_s:    
+                y_speed2 = 0                
     # --- Screen-clearing code goes here
  
     # Here, we clear the screen to white. Don't put other drawing commands
@@ -106,5 +103,9 @@ while not done:
         y_coord1 = 0
     if y_coord1 > 400:
         y_coord1 = 400
+    if y_coord2 < 0:
+        y_coord2 = 0
+    if y_coord2 > 400:
+        y_coord2 = 400
 # Close the window and quit.
 pygame.quit()
