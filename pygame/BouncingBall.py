@@ -11,6 +11,7 @@
  
 import pygame
 import sys
+
  
 # Define some colors
 BLACK = (0, 0, 0)
@@ -19,15 +20,15 @@ GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 BLUE = (115, 181, 239)
 YELLOW = (234, 226, 61)
-x = 350
-y = 250
-xoffset = 5
-yoffset = 5
+x = 960
+y = 590
+xoffset = 7
+yoffset = 7
 y_speed = 0
 y_speed2 = 0
 x_coord1 = 0
 y_coord1 = 500
-x_coord2 = 1910
+x_coord2 = 1905
 y_coord2 = 500
 collide = 0
 score1 = 0
@@ -37,6 +38,10 @@ pygame.init()
 info = pygame.display.Info()
 SIZE = W, H = info.current_w, info.current_h
 screen = pygame.display.set_mode(SIZE)
+click_sound1 = pygame.mixer.Sound("pongwall.wav")
+click_sound2 = pygame.mixer.Sound("pongleftpaddle.ogg")
+click_sound3 = pygame.mixer.Sound("pongrightpaddle.ogg")
+click_sound4 = pygame.mixer.Sound("pointwin.wav")
 # Set the width and height of the screen [width, height]
 #size = (700, 500)
 #screen = pygame.display.set_mode(size)
@@ -83,20 +88,26 @@ while not done:
     screen.fill(BLACK)
     y_coord1 += y_speed  #code to make the rectangle actually move (so y_coord1 will have y_speed added to it and then the value is assigned back to y_coord1)
     y_coord2 += y_speed2
-    if x < 1 or x > 1905:
-        x = 540
-        y = 960
+    if x < 1 or x > 1900:
+        x = 960
+        y = 590
         y_coord1 = 500
         y_coord2 = 500
-    if ((x == x_coord1 + 10) and ((y < (y_coord1 + 150 + 15)) and (y > (y_coord1 - 15)))) or ((x == x_coord2 - 25) and ((y < (y_coord2 + 150 + 15)) and (y > (y_coord2 - 15)))):
+        click_sound4.play()
+    if ((x == x_coord1 + 15) and ((y < (y_coord1 + 150 + 15)) and (y > (y_coord1 - 15)))) or ((x == x_coord2 - 35) and ((y < (y_coord2 + 150 + 15)) and (y > (y_coord2 - 15)))):
         xoffset = xoffset * (- 1)
+        if ((x == x_coord1 + 15) and ((y < (y_coord1 + 150 + 15)) and (y > (y_coord1 - 15)))):
+            click_sound2.play()
+        elif ((x == x_coord2 - 35) and ((y < (y_coord2 + 150 + 15)) and (y > (y_coord2 - 15)))):
+            click_sound3.play()
     x = x + xoffset
-    if y < 1 or y > 1065:
+    if y < 1 or y > 1060:
         yoffset = yoffset * (-1)
+        click_sound1.play()
     y = y + yoffset
     if x < 1:
         score1 += 1
-    elif x > 1905:
+    elif x > 1900:
         score2 += 1
     font = pygame.font.Font("C:/Users/Windows 10/Documents/Github/bit5x3.ttf", 40)
     text1 = font.render(str(score1),True,WHITE)
@@ -104,9 +115,9 @@ while not done:
     text2 = font.render(str(score2),True,WHITE)  
     screen.blit(text2,[970,10]) 
     # --- Drawing code should go here
-    pygame.draw.ellipse(screen, WHITE, [x,y,15,15], 0)
-    pygame.draw.rect(screen,WHITE,[x_coord1,y_coord1,10,150],3)
-    pygame.draw.rect(screen,WHITE,[x_coord2,y_coord2,10,150],3)
+    pygame.draw.ellipse(screen, WHITE, [x,y,20,20], 0)
+    pygame.draw.rect(screen,WHITE,[x_coord1,y_coord1,15,150],4)
+    pygame.draw.rect(screen,WHITE,[x_coord2,y_coord2,15,150],4)
     pygame.draw.rect(screen,WHITE,[960,0,1,5],0)
     pygame.draw.rect(screen,WHITE,[960,10,1,5],0)
     pygame.draw.rect(screen,WHITE,[960,20,1,5],0)
