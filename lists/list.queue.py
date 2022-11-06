@@ -1,10 +1,11 @@
+### SRC- Great, but would have liked to see more testing at the end.
 queue = []
 size = len(queue)
 maxSize = 5
 
 def isEmpty(q):
     return len(q) == 0
-#endprocedure
+#endprocedure - this is a function not a procedure
 
 def isFull(q):
     return len(q) == maxSize
@@ -24,7 +25,7 @@ def deQueue(q):
     else:
         print("Empty")
     #endif
-#endprocedure
+#endprocedure - this is a function not a procedure
 
 enQueue(queue, "socks")
 print(queue)
