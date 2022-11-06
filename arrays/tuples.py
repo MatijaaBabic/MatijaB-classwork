@@ -1,3 +1,4 @@
+### SRC - Great notes.
 tuple1 = ("Matija","12.1","13.4""10.4","11.4")
 list1 = ["Matija","12.1","13.4""10.4","11.4"]
 print(tuple1[0])

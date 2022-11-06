@@ -1,3 +1,4 @@
+### SRC - Great, good to see the pseudocode comments too
 outlets, quarters = (50, 4)
 outletSales= [[0 for i in range(quarters)] for j in range(outlets)]
 print(outletSales)
