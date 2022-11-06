@@ -234,10 +234,10 @@ while not done:
     clock.tick(60)
     if y_coord1 < 0:
         y_coord1 = 0
-    if y_coord1 > 980:
-        y_coord1 = 980
+    if y_coord1 > 930:
+        y_coord1 = 930
     if y_coord2 < 0:
         y_coord2 = 0
-    if y_coord2 > 980:
-        y_coord2 = 980
+    if y_coord2 > 930:
+        y_coord2 = 930
 # Close the window and quit.
