@@ -11,7 +11,8 @@
  
 import pygame
 import sys
-
+import random
+import pygame_menu
  
 # Define some colors
 BLACK = (0, 0, 0)
@@ -46,6 +47,23 @@ click_sound4 = pygame.mixer.Sound("pointwin.wav")
 #size = (700, 500)
 #screen = pygame.display.set_mode(size)
 pygame.display.set_caption('Ping Pong') 
+def set_difficulty(value, difficulty):
+    if difficulty == "easy":
+
+    pass
+
+def start_the_game():
+    # Do the job here !
+    pass
+menu = pygame_menu.Menu(
+    height=H,
+    theme=pygame_menu.themes.THEME_BLACK,
+    title='Pong: The Game',
+    width=W
+)
+menu.add.selector('Difficulty: ', [("Quitting speedrun any% world record", 1), ("Nightmare", 2), ('Hurt me plenty', 3), ("I ain't no baby", 4), ('Please dont hurt me :(', 5), ("Baby mode", 6)], onchange=set_difficulty)
+menu.add.button('Play', start_the_game)
+menu.add.button('Quit', pygame_menu.events.EXIT)
 # Loop until the user clicks the close button.
 done = False
  
@@ -110,9 +128,9 @@ while not done:
     elif x > 1900:
         score2 += 1
     font = pygame.font.Font("C:/Users/Windows 10/Documents/Github/bit5x3.ttf", 40)
-    text1 = font.render(str(score1),True,WHITE)
+    text1 = font.render(str(score2),True,WHITE)
     screen.blit(text1,[935,10])  
-    text2 = font.render(str(score2),True,WHITE)  
+    text2 = font.render(str(score1),True,WHITE)  
     screen.blit(text2,[970,10]) 
     # --- Drawing code should go here
     pygame.draw.ellipse(screen, WHITE, [x,y,20,20], 0)
