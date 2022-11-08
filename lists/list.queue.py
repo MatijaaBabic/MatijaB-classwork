@@ -5,11 +5,11 @@ maxSize = 5
 
 def isEmpty(q):
     return len(q) == 0
-#endprocedure - this is a function not a procedure
+#endfunction - this is a function not a procedure
 
 def isFull(q):
     return len(q) == maxSize
-#endprocedure
+#endfunction
 
 def enQueue(q, item):
     if not isFull(q):
@@ -17,7 +17,7 @@ def enQueue(q, item):
     else:
         print("Full")
     #endif
-#endprocedure
+#endfunction
 
 def deQueue(q):
     if not isEmpty(q):
@@ -25,12 +25,16 @@ def deQueue(q):
     else:
         print("Empty")
     #endif
-#endprocedure - this is a function not a procedure
+#endfunction - this is a function not a procedure
 
 enQueue(queue, "socks")
 print(queue)
 deQueue(queue)
 print(queue)
-print(isFull(queue))
+if print(isFull(queue)) == True:
+    print("Queue is full")
+else:
+    print("Queue is empty")    
 print(isEmpty(queue))
+
 
