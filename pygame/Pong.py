@@ -12,7 +12,6 @@
 import pygame
 import sys
 import random
-import pygame_menu
  
 # Define some colors
 BLACK = (0, 0, 0)
@@ -34,8 +33,6 @@ y_coord2 = 500
 collide = 0
 score1 = 0
 score2 = 0
-game = False
-menu = True
 pygame.init()
 info = pygame.display.Info()
 SIZE = W, H = info.current_w, info.current_h
@@ -58,6 +55,7 @@ clock = pygame.time.Clock()
 # -------- Main Program Loop -----------
 while not done:
     # --- Main event loop
+    screen.fill(BLACK)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True    
@@ -89,22 +87,22 @@ while not done:
 
     # If you want a background image, replace this clear with blit'ing the
     # background image.
-    y_coord1 += y_speed  #code to make the rectangle actually move (so y_coord1 will have y_speed added to it and then the value is assigned back to y_coord1)
-    y_coord2 += y_speed2
-    if x < 1 or x > 1900:
-        x = 960
-        y = 590
-        y_coord1 = 500
-        y_coord2 = 500
-        click_sound4.play()
-    if ((x == x_coord1 + 15) and ((y < (y_coord1 + 150 + 15)) and (y > (y_coord1 - 15)))) or ((x == x_coord2 - 35) and ((y < (y_coord2 + 150 + 15)) and (y > (y_coord2 - 15)))):
-            xoffset = xoffset * (- 1)
-    if ((x == x_coord1 + 15) and ((y < (y_coord1 + 150 + 15)) and (y > (y_coord1 - 15)))):
-            click_sound2.play()
-    elif ((x == x_coord2 - 35) and ((y < (y_coord2 + 150 + 15)) and (y > (y_coord2 - 15)))):
-            click_sound3.play()
+            y_coord1 += y_speed  #code to make the rectangle actually move (so y_coord1 will have y_speed added to it and then the value is assigned back to y_coord1)
+            y_coord2 += y_speed2
+            if x < 1 or x > 1900:
+                x = 960
+                y = 590
+                y_coord1 = 500
+                y_coord2 = 500
+                click_sound4.play()
+            if ((x == x_coord1 + 15) and ((y < (y_coord1 + 150 + 15)) and (y > (y_coord1 - 15)))) or ((x == x_coord2 - 35) and ((y < (y_coord2 + 150 + 15)) and (y > (y_coord2 - 15)))):
+                xoffset = xoffset * (- 1)
+                if ((x == x_coord1 + 15) and ((y < (y_coord1 + 150 + 15)) and (y > (y_coord1 - 15)))):
+                    click_sound2.play()
+                elif ((x == x_coord2 - 35) and ((y < (y_coord2 + 150 + 15)) and (y > (y_coord2 - 15)))):
+                    click_sound3.play()
             x = x + xoffset
-    if y < 1 or y > 1060:
+            if y < 1 or y > 1060:
                 yoffset = yoffset * (-1)
                 click_sound1.play()
             y = y + yoffset
@@ -234,9 +232,9 @@ while not done:
             pygame.display.flip()
         
             # --- Limit to 60 frames per second
-            clock.tick(60)
-            if y_coord1 < 0:
-                y_coord1 = 0
+    clock.tick(60)
+    if y_coord1 < 0:
+        y_coord1 = 0
             if y_coord1 > 930:
                 y_coord1 = 930
             if y_coord2 < 0:
