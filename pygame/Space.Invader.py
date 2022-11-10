@@ -6,10 +6,11 @@ GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 BLUE = (115, 181, 239)
 YELLOW = (234, 226, 61)
+
 class Invader(pygame.sprite.Sprite):
     def _init_(self):
-        super()._init_(self)
-        self.image = pygame.image.load("enemy.png").convert()
+        pygame.sprite.Sprite._init_(self)
+        self.image = pygame.image.load("enemy.png").convert_alpha()
         self.image.set_colorkey(WHITE)
         self.rect = self.image.get_rect()
     def update(self):
@@ -17,7 +18,7 @@ class Invader(pygame.sprite.Sprite):
         if self.rect.y > H:
             self.rect.y = random.randrange(20, 100)
             self.rect.x = random.randrange(0, W)
-pygame.init()
+pygame.init() 
 info = pygame.display.Info()
 SIZE = W, H = info.current_w, info.current_h
 screen = pygame.display.set_mode(SIZE)
@@ -47,7 +48,8 @@ while not done:
         #This is the code for when the key isn't pressed        
 
     # --- Game logic should go here
-    block_list.update()
+    
+    
     # --- Screen-clearing code goes here
  
     # Here, we clear the screen to white. Don't put other drawing commands
@@ -58,6 +60,7 @@ while not done:
     screen.fill(WHITE)
  
     # --- Drawing code should go here
+    block_list.update()
     block_list.draw(screen)
     blocks_hit_list = pygame.sprite.spritecollide(block, block_list, True)
     #if len(blocks_hit_list) > 0:
