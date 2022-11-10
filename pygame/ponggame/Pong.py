@@ -13,7 +13,7 @@ import pygame
 import sys
 import random
 import os
-os.chdir("ponggame") #in case that the sounds dont work, change this to the directory that the folder is located
+os.chdir(r"C:\Users\Windows 10\Desktop\Microsoft\Prezentacije\Programs for school\Code\Github\MatijaB-classwork\pygame\ponggame") #in case that the sounds dont work, change this to the directory that the folder is located
 # Define some colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -39,8 +39,8 @@ info = pygame.display.Info()
 SIZE = W, H = info.current_w, info.current_h
 screen = pygame.display.set_mode(SIZE)
 click_sound1 = pygame.mixer.Sound("pongwall.wav")
-click_sound2 = pygame.mixer.Sound("pongleftpaddle.ogg")
-click_sound3 = pygame.mixer.Sound("pongrightpaddle.ogg")
+click_sound2 = pygame.mixer.Sound("pongleftpaddle.wav")
+click_sound3 = pygame.mixer.Sound("pongrightpaddle.wav")
 click_sound4 = pygame.mixer.Sound("pointwin.wav")
 font = pygame.font.Font("C:/Users/Windows 10/Documents/Github/bit5x3.ttf", 40)
 # Set the width and height of the screen [width, height]
