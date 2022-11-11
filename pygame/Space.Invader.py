@@ -6,28 +6,39 @@ GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 BLUE = (115, 181, 239)
 YELLOW = (234, 226, 61)
+kills = 0
+score = 0
+highest_score = 0
+level = 1
 
 class Invader(pygame.sprite.Sprite):
-    def _init_(self):
-        pygame.sprite.Sprite._init_(self)
+    def __init__(self):
+        super().__init__()
         self.image = pygame.image.load("enemy.png").convert_alpha()
-        self.image.set_colorkey(WHITE)
+        self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
+        
     def update(self):
-        self.rect.y += 2
+        self.rect.y += 1
         if self.rect.y > H:
-            self.rect.y = random.randrange(20, 100)
-            self.rect.x = random.randrange(0, W)
+            self.rect.y = 20
+            self.rect.x = random.randrange(0, (W - 10))
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("Player.png").convert_alpha()
+        self.image.set_colorkey(BLACK)
+        self.rect = self.image.get_rect()
 pygame.init() 
 info = pygame.display.Info()
 SIZE = W, H = info.current_w, info.current_h
 screen = pygame.display.set_mode(SIZE)
 pygame.display.set_caption("Space Invaders")
 block_list = pygame.sprite.Group()
-for i in range(25):
+for i in range(10):
     block = Invader()
     block.rect.x = random.randrange(W)
-    block.rect.y = random.randrange(H)
+    block.rect.y = 20
     block_list.add(block)
 # Loop until the user clicks the close button.
 done = False
@@ -57,12 +68,13 @@ while not done:
  
     # If you want a background image, replace this clear with blit'ing the
     # background image.
-    screen.fill(WHITE)
+    screen.fill(BLACK)
  
     # --- Drawing code should go here
-    block_list.update()
     block_list.draw(screen)
     blocks_hit_list = pygame.sprite.spritecollide(block, block_list, True)
+    block_list.update()
+    
     #if len(blocks_hit_list) > 0:
 
     # --- Go ahead and update the screen with what we've drawn.
