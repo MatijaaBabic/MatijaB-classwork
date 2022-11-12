@@ -8,7 +8,6 @@ class NodeType:
       return f'(Name: {self.name}; Pointer: {self.pointer})'
     #end function
 
-
 #end class
 x = NodeType("Bob",-1)
 x.name = "Ava"
