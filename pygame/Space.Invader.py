@@ -1,6 +1,7 @@
 import pygame
 import random
 from pygame import mixer
+import pygame_menu
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
@@ -69,9 +70,6 @@ player = Player()
 player.rect.x = 928
 player.rect.y = 1000
 all_sprites_list.add(player)
-#pygame.mixer.init()
-#pygame.mixer.music.load('05_Earth.mp3')
-#pygame.mixer.music.play()
 # Loop until the user clicks the close button.
 done = False
  
@@ -85,7 +83,6 @@ while not done:
             done = True
         elif event.type == pygame.KEYDOWN:     #we can use while if we want it to move for as long as the key is presed
             if event.key == pygame.K_ESCAPE:
-                pygame.mixer.music.stop()
                 pygame.quit()
             if event.key == pygame.K_LEFT:
                 velp = -5
@@ -124,5 +121,4 @@ while not done:
     clock.tick(60)
  
 # Close the window and quit.
-pygame.mixer.music.stop()
 pygame.quit()
