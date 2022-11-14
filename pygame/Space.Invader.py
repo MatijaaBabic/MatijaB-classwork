@@ -65,7 +65,8 @@ for y in range (0,3):
         block.rect.y = 10 + 64 * y
         block_list.add(block)
         all_sprites_list.add(block)
-        block_list.update()
+        ##block_list.update()
+print(len(block_list))
 player = Player()
 player.rect.x = 928
 player.rect.y = 1000
@@ -106,7 +107,7 @@ while not done:
     screen.blit(bg.image, bg.rect)
     # --- Drawing code should go here
     all_sprites_list.draw(screen)
-    blocks_hit_list = pygame.sprite.spritecollide(block, block_list, True)
+    ##blocks_hit_list = pygame.sprite.spritecollide(block, block_list, True)
     block_list.update()
     
     #if len(blocks_hit_list) > 0:
