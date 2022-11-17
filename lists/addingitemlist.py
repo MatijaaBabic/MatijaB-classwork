@@ -1,3 +1,4 @@
+
 class NodeType:
     def __init__(self,nane,ponter):
         self.name = nane                    #has to be different than atribute
@@ -10,40 +11,46 @@ myList.append(NodeType("",-1))
 for index in range (0,8):
 	myList[index].pointer = index + 1
 myList[9].pointer = -1
-newName = str(input("Please input the name wanted: "))
-def AddItem(newItem):
-    start = -1
-    nextfree = 0
-    if myList[nextfree].pointer  == -1: #then 
+sp = -1
+nf = 0
+def AddItem(newName):
+    global sp
+    global nf
+    if myList[nf].pointer  == -1: #then #check if the list is full
         print("Error: List full") 
-    else:
-        myList[nextfree].name = newName
-        if start == -1:
-            temp = myList[nextfree].pointer       
-            myList[nextfree].pointer = -1
-            start = nextfree
-            nextfree = temp
+    else:                   
+        myList[nf].name = newName
+        if sp == -1:                      #check if list is empty
+            temp = myList[nf].pointer       
+            myList[nf].pointer = -1
+            sp = nf
+            nf = temp
         else:
-            p = start
-            if newItem < myList[p].name:
-                myList[nextfree].pointer = start
-                start = nextfree
+            p = sp
+            if newName < myList[p].name:
+                myList[nf].pointer = sp
+                sp = nf
             else:
                 placeFound = False
                 while myList[p].pointer != -1 and placeFound == False:
-                    if newItem >= myList[myList[p].pointer].name:
+                    if newName >= myList[myList[p].pointer].name:
                         p = myList[p].pointer
                     else:
-                        placefound = True
+                        placeFound = True
                     #endif
                 #endwhile
-                temp = nextfree
-                nextfree = NodeType[nextfree].pointer
-                NodeType[temp].pointer = NodeType[p].pointer
-                NodeType[p].pointer = temp
+                #temp = nf
+                temp = myList[nf].pointer
+                myList[temp].pointer = myList[p].pointer
+                myList[p].pointer = temp
+                nf = temp
             #endif
         #endif
     #endif
 #endprocedure
-AddItem(newName)
+AddItem("Matija")
+AddItem("John")
+AddItem("E")
 print(myList)
+print(sp)
+print(nf)
