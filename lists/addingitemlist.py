@@ -20,7 +20,7 @@ def AddItem(newItem):
         myList[nextfree].name = newName
         if start == -1:
             temp = myList[nextfree].pointer       
-            myList[nextfree].pointer = 1
+            myList[nextfree].pointer = -1
             start = nextfree
             nextfree = temp
         else:
@@ -47,5 +47,3 @@ def AddItem(newItem):
 #endprocedure
 AddItem(newName)
 print(myList)
-
-
