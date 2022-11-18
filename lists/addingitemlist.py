@@ -29,7 +29,7 @@ def AddItem(newName):
             if newName < myList[p].name:         #check if the new name is alphabetically before the starting name
                 myList[nf].pointer = sp
                 sp = nf
-            else:
+            else:                                #this part of the code is completely confusing to me, I attempted to make the part above into a for loop so that it works for all words instead just for the first one but it messed up the results further. Biggest issue = me stressing myself * my lack of knowledge 
                 placeFound = False
                 while myList[p].pointer != -1 and placeFound == False:
                     if newName >= myList[myList[p].pointer].name:
