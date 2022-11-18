@@ -26,7 +26,7 @@ def AddItem(newName):
             nf = temp
         else:
             p = sp
-            if newName < myList[p].name:
+            if newName < myList[p].name:         #check if the new name is alphabetically before the starting name
                 myList[nf].pointer = sp
                 sp = nf
             else:
