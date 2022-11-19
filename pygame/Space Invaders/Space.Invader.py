@@ -2,6 +2,9 @@ import pygame
 import random
 from pygame import mixer
 import pygame_menu
+import os
+import sys
+os.chdir(r'C:\Users\Windows 10\Desktop\Microsoft\Prezentacije\Programs for school\Code\Github\MatijaB-classwork\pygame\Space Invaders')
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
@@ -13,7 +16,8 @@ score = 0
 highest_score = 0
 level = 1
 velp = 0
-offset = 128
+offset = 48
+speed = 2
 class Invader(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -21,21 +25,44 @@ class Invader(pygame.sprite.Sprite):
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.health = 2
+        self.counter = 0
         
     def update(self):
-        self.rect.y = self.rect.y + 1
-        if self.rect.y > H - 192:
-            self.rect.y = H - 192
-
-
+        if self.counter % 5 == 0:
+            self.rect.y += speed
+        if self.counter == 0:
+            self.rect.x += 30
+        if self.counter == 50:
+            self.rect.x -= 30
+        if self.counter == 100:
+            self.rect.x += 50
+        if self.counter == 150:
+            self.rect.x -= 50
+        self.counter += 1
+        if self.counter == 200:
+            self.counter = 0
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.image = pygame.image.load("Player.png").convert_alpha()
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
-    
-
+        self.score = 0
+        self.highscore = 0
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("laser.png")
+        self.rect = self.image.get_rect()
+        self.speeeeed = -7
+        self.health = 1
+    def update(self):
+        self.rect.y += self.speeeeed
+        if self.rect.y < 0:
+            self.kill()
+    def death(self):
+        if self.health == 0:
+            self.kill()
 class Background(pygame.sprite.Sprite):
     def __init__(self, image_file, location):
         pygame.sprite.Sprite.__init__(self)  #call Sprite initializer
@@ -44,10 +71,28 @@ class Background(pygame.sprite.Sprite):
         self.rect.left, self.rect.top = location
 
 def game_over():
+    global speed
+    playsound = True
+    player.kill()
+    speed = 0
     game_over_text = font.render("GAME OVER", True, WHITE)
-    screen.blit(game_over_text, (760, 440))
-
+    screen.blit(game_over_text, (600, 440))
+    if playsound:
+        lose_s.play()
+        playsound = False
+def win():
+    playsound1 = True
+    player.kill()
+    win_text = font.render("YOU WIN!", True, WHITE)
+    screen.blit(win_text, (600, 440))
+    if playsound1:
+        win_s.play()
+        playsound1 = False
+        
 pygame.init() 
+shooting_sound = pygame.mixer.Sound("shooting.wav")
+win_s = pygame.mixer.Sound("win.wav")
+lose_s = pygame.mixer.Sound("lose.wav")
 font = pygame.font.Font("C:/Users/Windows 10/Documents/Github/bit5x3.ttf", 200)
 info = pygame.display.Info()
 SIZE = W, H = info.current_w, info.current_h
@@ -56,21 +101,22 @@ pygame.display.set_caption("Space Invaders")
 block_list = pygame.sprite.Group()
 all_sprites_list = pygame.sprite.Group()
 bg = Background('bg.jpg', [0,0])
-for y in range (0,3):
-    offset = 128
-    for i in range(0,9):         #if we do it this way always write it as one more enemy than you want
+for y in range (0,5):
+    offset = 292
+    for i in range(0,15):         #if we do it this way always write it as one more enemy than you want
         block = Invader()
         block.rect.x = offset
-        offset = offset + 128
-        block.rect.y = 10 + 64 * y
+        offset = offset + 96
+        block.rect.y = 10 + 48 * y
+        health = block.health
         block_list.add(block)
         all_sprites_list.add(block)
         ##block_list.update()
-print(len(block_list))
 player = Player()
 player.rect.x = 928
 player.rect.y = 1040
 all_sprites_list.add(player)
+bullet_list = pygame.sprite.Group()
 # Loop until the user clicks the close button.
 done = False
  
@@ -85,17 +131,34 @@ while not done:
         elif event.type == pygame.KEYDOWN:     #we can use while if we want it to move for as long as the key is presed
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
+                sys.exit()
             if event.key == pygame.K_LEFT:
                 velp = -5
             elif event.key == pygame.K_RIGHT:
                 velp = 5
+            if event.key == pygame.K_SPACE:
+                bullet = Bullet()
+                bullet.rect.x = player.rect.x + 31 
+                bullet.rect.y = player.rect.y
+                all_sprites_list.add(bullet)
+                bullet_list.add(bullet)
+                shooting_sound.play()
         #code to make the rectangle actually move (so y_coord1 will have y_speed added to it and then the value is assigned back to y_coord1)
         #This is the code for when the key isn't pressed        
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                  velp = 0
     # --- Game logic should go here
- 
+    all_sprites_list.update()
+    for bullet in bullet_list:
+        block_hit_list = pygame.sprite.spritecollide(bullet, block_list, True)
+        for block in block_hit_list:
+            bullet_list.remove(bullet)
+            all_sprites_list.remove(bullet)
+            all_sprites_list.remove(block)
+            block_list.remove(block)
+            player.score += 1
+            print(score)
     # --- Screen-clearing code goes here
  
     # Here, we clear the screen to white. Don't put other drawing commands
@@ -107,11 +170,14 @@ while not done:
     screen.blit(bg.image, bg.rect)
     # --- Drawing code should go here
     all_sprites_list.draw(screen)
-    ##blocks_hit_list = pygame.sprite.spritecollide(block, block_list, True)
-    block_list.update()
     
+    ##blocks_hit_list = pygame.sprite.spritecollide(block, block_list, True)
     #if len(blocks_hit_list) > 0:
-
+    if block.rect.y > 1000: 
+        game_over()
+        
+    if len(block_list) == 0:
+        win()
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
     if player.rect.x < 0:
