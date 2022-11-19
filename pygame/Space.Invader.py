@@ -69,7 +69,7 @@ for y in range (0,3):
 print(len(block_list))
 player = Player()
 player.rect.x = 928
-player.rect.y = 1000
+player.rect.y = 1040
 all_sprites_list.add(player)
 # Loop until the user clicks the close button.
 done = False
