@@ -18,6 +18,7 @@ level = 1
 velp = 0
 offset = 48
 speed = 2
+playsound = True
 class Invader(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -70,9 +71,34 @@ class Background(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.left, self.rect.top = location
 
+class Boom(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.images = []
+        for i in range (0, 7):
+            img = pygame.image.load(f"boom{i}.png")
+            img = pygame.transform.scale(img, (32, 32))
+            self.images.append(img)
+        self.index = 0
+        self.image = self.images[self.index]
+        self.rect = self.image.get_rect()
+        self.rect.center = [x, y]
+        self.counter = 0
+    def update(self):
+        boom_speed = 4
+        self.counter += 1
+        if self.counter >= boom_speed and self.index < len(self.images) - 1:
+            self.counter = 0
+            self.index += 1
+            self.image = self.images[self.index]
+        if self.index >= len(self.images) - 1 and self.counter >= boom_speed:
+            self.kill()
+
+
 def game_over():
+    global playsound
     global speed
-    playsound = True
+    mixer.music.stop()
     player.kill()
     speed = 0
     game_over_text = font.render("GAME OVER", True, WHITE)
@@ -81,13 +107,14 @@ def game_over():
         lose_s.play()
         playsound = False
 def win():
-    playsound1 = True
+    global playsound
+    mixer.music.stop()
     player.kill()
     win_text = font.render("YOU WIN!", True, WHITE)
     screen.blit(win_text, (600, 440))
-    if playsound1:
+    if playsound:
         win_s.play()
-        playsound1 = False
+        playsound = False
         
 pygame.init() 
 shooting_sound = pygame.mixer.Sound("shooting.wav")
@@ -117,6 +144,10 @@ player.rect.x = 928
 player.rect.y = 1040
 all_sprites_list.add(player)
 bullet_list = pygame.sprite.Group()
+boom_list = pygame.sprite.Group()
+#background music
+mixer.music.load("background.wav")
+mixer.music.play(-1)
 # Loop until the user clicks the close button.
 done = False
  
@@ -133,13 +164,13 @@ while not done:
                 pygame.quit()
                 sys.exit()
             if event.key == pygame.K_LEFT:
-                velp = -5
+                velp = -3
             elif event.key == pygame.K_RIGHT:
-                velp = 5
+                velp = 3
             if event.key == pygame.K_SPACE:
                 bullet = Bullet()
                 bullet.rect.x = player.rect.x + 31 
-                bullet.rect.y = player.rect.y
+                bullet.rect.y = player.rect.y - 31
                 all_sprites_list.add(bullet)
                 bullet_list.add(bullet)
                 shooting_sound.play()
@@ -149,6 +180,7 @@ while not done:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                  velp = 0
     # --- Game logic should go here
+    boom_list.draw(screen)
     all_sprites_list.update()
     for bullet in bullet_list:
         block_hit_list = pygame.sprite.spritecollide(bullet, block_list, True)
@@ -157,8 +189,11 @@ while not done:
             all_sprites_list.remove(bullet)
             all_sprites_list.remove(block)
             block_list.remove(block)
+            boom = Boom(block.rect.x, block.rect.y)
+            boom_list.add(boom)
+            boom_list.update()
             player.score += 1
-            print(score)
+
     # --- Screen-clearing code goes here
  
     # Here, we clear the screen to white. Don't put other drawing commands
@@ -173,9 +208,8 @@ while not done:
     
     ##blocks_hit_list = pygame.sprite.spritecollide(block, block_list, True)
     #if len(blocks_hit_list) > 0:
-    if block.rect.y > 1000: 
+    if block.rect.y >= player.rect.y: 
         game_over()
-        
     if len(block_list) == 0:
         win()
     # --- Go ahead and update the screen with what we've drawn.
