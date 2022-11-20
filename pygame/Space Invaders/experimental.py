@@ -29,22 +29,18 @@ class Invader(pygame.sprite.Sprite):
         self.counter = 0
         
     def update(self):
-        if self.counter % 20 == 0:
+        if self.counter % 5 == 0:
             self.rect.y += speed
         if self.counter == 0:
-            self.rect.x += 50
+            self.rect.x += 30
         if self.counter == 50:
-            self.rect.x += 70
+            self.rect.x -= 30
         if self.counter == 100:
-            self.rect.x += 100
+            self.rect.x += 50
         if self.counter == 150:
             self.rect.x -= 50
-        if self.counter == 200:
-            self.rect.x -= 70
-        if self.counter == 250:
-            self.rect.x -= 100
         self.counter += 1
-        if self.counter == 300:
+        if self.counter == 200:
             self.counter = 0
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -118,14 +114,12 @@ def win():
     if playsound:
         win_s.play()
         playsound = False
-        
 pygame.init() 
 shooting_sound = pygame.mixer.Sound("shooting.wav")
 win_s = pygame.mixer.Sound("win.wav")
 lose_s = pygame.mixer.Sound("lose.wav")
 boom_s = pygame.mixer.Sound("explosion.wav")
 font = pygame.font.Font("C:/Users/Windows 10/Documents/Github/bit5x3.ttf", 200)
-font1 = pygame.font.Font("C:/Users/Windows 10/Documents/Github/bit5x3.ttf", 20)
 info = pygame.display.Info()
 SIZE = W, H = info.current_w, info.current_h
 screen = pygame.display.set_mode(SIZE)
@@ -134,7 +128,7 @@ block_list = pygame.sprite.Group()
 all_sprites_list = pygame.sprite.Group()
 bg = Background('bg.jpg', [0,0])
 for y in range (0,5):
-    offset = 160
+    offset = 292
     for i in range(0,15):         #if we do it this way always write it as one more enemy than you want
         block = Invader()
         block.rect.x = offset
@@ -154,11 +148,30 @@ boom_list = pygame.sprite.Group()
 mixer.music.load("background.wav")
 mixer.music.play(-1)
 # Loop until the user clicks the close button.
-done = False
- 
+done = True
+def main_menu():
+    global done
+    run = True
+    while run:
+        title = font.render("Space Invaders", 1, WHITE)
+        press = font.render("PRESS SPACE TO START GAME", 1, WHITE)
+        screen.blit(title, (W/2 - title.get_width()/2, 350))
+        screen.blit(press, (W/2 - press.get_width()/2, 600))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN and event.type == pygame.K_SPACE:
+                done = True
+                run = False
+            if event.type == pygame.KEYDOWN and event.type == pygame.K_ESCAPE:
+                run = False
+                pygame.quit()
+                sys.exit()
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
-
+main_menu()
 # -------- Main Program Loop -----------
 while not done:
     # --- Main event loop
@@ -212,14 +225,8 @@ while not done:
     # --- Drawing code should go here
     all_sprites_list.draw(screen)
     boom_list.draw(screen)
-    num_of_enemies = font1.render("Number of enemies left:", True, WHITE)
-    num = font1.render(str(len(block_list)), True, WHITE)
-    screen.blit(num_of_enemies, [10, 30])
-    screen.blit(num, [250, 30])
-
     ##blocks_hit_list = pygame.sprite.spritecollide(block, block_list, True)
     #if len(blocks_hit_list) > 0:
-
     m = player.rect.y
     n = block.rect.y
     if abs(m - n) < 50 and len(block_list) != 0: 
