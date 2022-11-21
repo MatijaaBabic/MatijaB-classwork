@@ -14,11 +14,14 @@ YELLOW = (234, 226, 61)
 kills = 0
 score = 0
 highest_score = 0
-level = 1
 velp = 0
 offset = 48
 speed = 2
 playsound = True
+m = 20
+n = 3
+c_level = 1
+z = 0
 class Invader(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -29,7 +32,7 @@ class Invader(pygame.sprite.Sprite):
         self.counter = 0
         
     def update(self):
-        if self.counter % 20 == 0:
+        if self.counter % m == 0:
             self.rect.y += speed
         if self.counter == 0:
             self.rect.x += 50
@@ -118,7 +121,7 @@ def win():
     if playsound:
         win_s.play()
         playsound = False
-        
+
 pygame.init() 
 shooting_sound = pygame.mixer.Sound("shooting.wav")
 win_s = pygame.mixer.Sound("win.wav")
@@ -133,7 +136,28 @@ pygame.display.set_caption("Space Invaders")
 block_list = pygame.sprite.Group()
 all_sprites_list = pygame.sprite.Group()
 bg = Background('bg.jpg', [0,0])
-for y in range (0,5):
+def change_level():
+    global m
+    global n
+    global c_level
+    c_level = c_level + 1
+    if c_level == 2:
+        m = 10
+        n = 3
+        block_generator()
+    elif c_level == 3:
+        m = 15
+        n = 5
+        block_generator()
+    elif c_level == 4:
+        m = 10
+        n = 3
+        block_generator()
+    elif c_level == 5: 
+        m = 5
+        n = 7
+        block_generator()
+for y in range (0,n):
     offset = 160
     for i in range(0,15):         #if we do it this way always write it as one more enemy than you want
         block = Invader()
@@ -143,7 +167,19 @@ for y in range (0,5):
         health = block.health
         block_list.add(block)
         all_sprites_list.add(block)
-        ##block_list.update()
+        #block_list.update()
+def block_generator():
+    for y in range (0,n):
+        offset = 160
+        for i in range(0,15):         #if we do it this way always write it as one more enemy than you want
+            block = Invader()
+            block.rect.x = offset
+            offset = offset + 96
+            block.rect.y = 10 + 48 * y
+            health = block.health
+            block_list.add(block)
+            all_sprites_list.add(block)
+            #block_list.update()
 player = Player()
 player.rect.x = 928
 player.rect.y = 1040
@@ -216,15 +252,28 @@ while not done:
     num = font1.render(str(len(block_list)), True, WHITE)
     screen.blit(num_of_enemies, [10, 30])
     screen.blit(num, [250, 30])
-
+    level = font1.render("Current level:",True, WHITE)
+    level_number = font1.render(str(c_level), True, WHITE)
+    screen.blit(level, [10, 60])
+    screen.blit(level_number, [150 , 60])
     ##blocks_hit_list = pygame.sprite.spritecollide(block, block_list, True)
     #if len(blocks_hit_list) > 0:
 
-    m = player.rect.y
-    n = block.rect.y
-    if abs(m - n) < 50 and len(block_list) != 0: 
+
+    if len(block_list) == 0 and c_level != 5:
+        change_level()
+        block.kill()
+        block_list.add(block)
+        all_sprites_list.add(block)
+        all_sprites_list.draw(screen)
+        all_sprites_list.update()
+        block_list.update()    
+    o = player.rect.y
+    p = block.rect.y
+    z = 48 * n - 33 * n
+    if abs(o - p) < z and len(block_list) != 0: 
         game_over()
-    if len(block_list) == 0:
+    elif len(block_list) == 0 and c_level == 5:
         win()
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
