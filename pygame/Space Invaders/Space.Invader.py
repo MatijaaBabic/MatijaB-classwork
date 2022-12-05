@@ -270,8 +270,11 @@ while not done:
         block_list.update()    
     o = player.rect.y
     p = block.rect.y
-    z = 48 * n - 33 * n
-    if abs(o - p) < z and len(block_list) != 0: 
+    z = True
+    block_hit_player_list = pygame.sprite.spritecollide(player, block_list, True)
+    for block in block_hit_player_list:
+        z = False 
+    if z == False:    
         game_over()
     elif len(block_list) == 0 and c_level == 5:
         win()
