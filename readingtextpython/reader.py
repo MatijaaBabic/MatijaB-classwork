@@ -5,3 +5,5 @@ f = open('nd.txt', 'r')
 data = f.read()
 f.close()
 print(data)
+
+#It works!
