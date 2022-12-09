@@ -106,6 +106,23 @@ class Tile(pygame.sprite.Sprite):                #board class
                 textSurf = tinytext.render(str(j[2]), True, BLACK)
                 screen.blit(textSurf, ((j[0]+30), (j[1]+30)))
         #code for drawing the ladders and snakes
+        for x in self.ladder:
+            pygame.draw.line(screen, (RED) , (x[0][0]+53,x[0][1]+56),(x[1][0]+53,x[1][1]+56),3)
+            pygame.draw.line(screen, (RED) , (x[0][0]+106,x[0][1]+56),(x[1][0]+106,x[1][1]+56),3)
+        for x in self.snakes:
+            pygame.draw.line(screen, (GREEN) , (x[0][0]+80,x[0][1]+56),(x[1][0]+80,x[1][1]+56),8)
+
+#player class
+class player(pygame.sprite.Sprite):
+    def __init__(self, T, color):
+        self.val = 1
+        self.posx = None
+        self.posy = None
+        self.tile = T.tilelist
+        self.lad = T.ladder
+        self.snk = T.snakes
+        self.color = color
+
                 
 
 
