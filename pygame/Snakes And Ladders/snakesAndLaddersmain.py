@@ -122,8 +122,29 @@ class player(pygame.sprite.Sprite):
         self.lad = T.ladder
         self.snk = T.snakes
         self.color = color
-
-                
+        self.size = random.randint(50, 80)
+        for x in self.tile:                   #code to spawn the object at the starting position 1
+            for y in x:
+                if self.val == y[2]:
+                    a = y
+                    self.posx = y[0]
+                    self.posy = y[1]
+    
+    def move(self, no):          #function for movement
+        if (self.val - no) > 0:
+            self.val = self.val + no
+        else:
+            print("N o.")   #just a fun little thing to show, as it wont appear in the actual window, just in the run bar
+        if self.val == 100:          #winning condition
+            print("You win :D")
+            global DONE1	 #variable which tells the program when to present the winning screen
+            DONE1 = True
+        for x in self.tile:            #so we move by checking values of the places that we are at
+            for y in x:
+                if self.val == y[2]:
+                    a = y
+                    self.posx = y[0]
+                    self.posy = y[1]
 
 
                 
