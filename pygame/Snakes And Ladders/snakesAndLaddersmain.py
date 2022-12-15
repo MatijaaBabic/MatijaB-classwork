@@ -8,6 +8,7 @@ info = pygame.display.Info()
 SIZE = W, H = info.current_w, info.current_h
 screen = pygame.display.set_mode(SIZE)
 clock = pygame.time.Clock()
+size = 10
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
@@ -19,6 +20,8 @@ LIGHTYELLOW = (241, 239, 143)
 LIGHTRED = (241, 158, 143)
 LIGHTGREEN = (143, 241, 143)
 LIGHTPURPLE = (211, 121, 199)
+DBLUE = (5, 66, 119)
+PINKISH = (233, 112, 193)
 
 
 
@@ -38,7 +41,7 @@ class Tile(pygame.sprite.Sprite):                #board class
         
         #ladder code
         self.ladder = []                #creating ladders, by having a list containing their x and y coordinates
-        self.counter = [1, 100]
+        self.counter = [1, 100]                      
         numlad = random.randint(4, 6)       #4 to 6 ladders per game, randomly chosen
         for i in range(numlad):
             check = True
@@ -119,10 +122,10 @@ class player(pygame.sprite.Sprite):
         self.posx = None
         self.posy = None
         self.tile = T.tilelist
-        self.lad = T.ladder
-        self.snk = T.snakes
+        self.lader = T.ladder
+        self.snek = T.snakes
         self.color = color
-        self.size = random.randint(50, 80)
+        self.size = random.randint(50, 70)
         for x in self.tile:                   #code to spawn the object at the starting position 1
             for y in x:
                 if self.val == y[2]:
@@ -130,25 +133,143 @@ class player(pygame.sprite.Sprite):
                     self.posx = y[0]
                     self.posy = y[1]
     
-    def move(self, no):          #function for movement
-        if (self.val - no) > 0:
-            self.val = self.val + no
+    def move(self, e):          #function for movement
+        if (self.val - e) > 0:
+            self.val = self.val + e
         else:
             print("N o.")   #just a fun little thing to show, as it wont appear in the actual window, just in the run bar
         if self.val == 100:          #winning condition
             print("You win :D")
-            global DONE1	 #variable which tells the program when to present the winning screen
-            DONE1 = True
+            global WIN	 #variable which will tell the program when to present the winning screen
+            WIN = True
         for x in self.tile:            #so we move by checking values of the places that we are at
             for y in x:
                 if self.val == y[2]:
                     a = y
                     self.posx = y[0]
                     self.posy = y[1]
+        
+        for i in self.lader:             #code to actually use the ladders and snakes
+            if (self.posx == i[0][0] and self.posy == i[0][1]) or (self.posx == i[1][0] and self.posy == i[1][1]):            #check to see if the coordinates of the player corelate with the beginning coordinates of the ladders by using the coordinates in the ladders list
+                if self.val == min(i[0][2], i[1][2]):                      #we make the value of the player the value of the top of the ladder if the player is at the bottom
+                    self.val = max(i[0][2], i[1][2])
+                    for x in self.tile:
+                        for y in x:                                                             #we change the value of the player to the value of the top, and then move the player to that value
+                            if self.val == y[2]:
+                                a = y
+                                self.posx = y[0]
+                                self.posy = y[1]
+                else:
+                    pass
+        
+        #you can do the same thing with the snakes, which is what I did, just inverted the max and min functions for the self.value
+        for j in self.snek:             #code to actually use the ladders and snakes
+            if (self.posx == j[0][0] and self.posy == j[0][1]) or (self.posx == j[1][0] and self.posy == j[1][1]):            #check to see if the coordinates of the player corelate with the end coordinate of the snake through the list (same process as the ladder function)
+                if self.val == max(j[0][2], j[1][2]):                      #we make the value of the player the value of the tail of the snake if the player is at it's head
+                    self.val = min(j[0][2], j[1][2])
+                    for x in self.tile:
+                        for y in x:                                                             #we change the value of the player to the value of the bottom, and then move the player to that value
+                            if self.val == y[2]:
+                                a = y
+                                self.posx = y[0]
+                                self.posy = y[1]
+                else:
+                    pass
+    def draw(self, playerNum):
+        if playerNum == 1:
+            pygame.draw.circle(screen,(self.color),(self.posx+60,self.posy+40),self.size)
+        elif playerNum == 2:
+            pygame.draw.rect(screen,(self.color),(self.posx+60,self.posy+40),self.size)
 
+#the pain of writing 2 dice codes :(((((
+def dice1one():
+	x,y,w,h = 1605,100,80,80
+	pygame.draw.rect(screen, DBLUE ,(x,y,w,h))
+	pygame.draw.circle(screen, PINKISH ,((x+(w//2)), (y+(h//2))), size)
 
-                
-                
+def dice2one():
+	x,y,w,h = 1705,100,80,80
+	pygame.draw.rect(screen, DBLUE ,(x,y,w,h))
+	pygame.draw.circle(screen, PINKISH ,((x+(w//2)), (y+(h//2))), size)
 
+def dice1two():
+	x,y,w,h = 1605,100,80,80
+	pygame.draw.rect(screen, DBLUE ,(x,y,w,h))
+	pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(h//2))),size)
+	pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(h//2))),size)
 
+def dice2two():
+	x,y,w,h = 1705,100,80,80
+	pygame.draw.rect(screen, DBLUE ,(x,y,w,h))
+	pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(h//2))),size)
+	pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(h//2))),size)
 
+def dice1three():
+	x,y,w,h = 1605,100,80,80
+	pygame.draw.rect(screen, DBLUE ,(x,y,w,h))
+	pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(3*h//4))),size)
+	pygame.draw.circle(screen, PINKISH ,((x+(w//2)), (y+(h//2))),size)
+	pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(h//4))),size)
+
+def dice2three():
+	x,y,w,h = 1705,100,80,80
+	pygame.draw.rect(screen, DBLUE ,(x,y,w,h))
+	pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(3*h//4))),size)
+	pygame.draw.circle(screen, PINKISH ,((x+(w//2)), (y+(h//2))),size)
+	pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(h//4))),size)
+
+def dice1four():
+    x,y,w,h = 1605,100,80,80
+    pygame.draw.rect(screen, DBLUE ,(x,y,w,h))
+    pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(h//4))),size)
+    pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(3*h//4))),size)
+    pygame.draw.circle(screen, PINKISH,((x+(3*w//4)), (y+(h//4))),size)
+    pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(3*h//4))),size)
+
+def dice2four():
+    x,y,w,h = 1705,100,80,80
+    pygame.draw.rect(screen, DBLUE ,(x,y,w,h))
+    pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(h//4))),size)
+    pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(3*h//4))),size)
+    pygame.draw.circle(screen, PINKISH,((x+(3*w//4)), (y+(h//4))),size)
+    pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(3*h//4))),size)
+
+def dice1five():
+    x,y,w,h = 1605,100,80,80
+    pygame.draw.rect(screen, DBLUE ,(x,y,w,h))
+    pygame.draw.circle(screen, PINKISH ,((x+(w//2)), (y+(h//2))),size)
+    pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(h//4))),size)
+    pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(3*h//4))),size)
+    pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(h//4))),size)
+    pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(3*h//4))),size)
+
+def dice2five():
+    x,y,w,h = 1705,100,80,80
+    pygame.draw.rect(screen, DBLUE ,(x,y,w,h))
+    pygame.draw.circle(screen, PINKISH ,((x+(w//2)), (y+(h//2))),size)
+    pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(h//4))),size)
+    pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(3*h//4))),size)
+    pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(h//4))),size)
+    pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(3*h//4))),size)
+
+def dice1six():
+    x,y,w,h = 1605,100,80,80
+    pygame.draw.rect(screen, DBLUE ,(x,y,w,h))
+    pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(h//2))),size)
+    pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(h//2))),size)
+    pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(h//4))-10),size)
+    pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(3*h//4))+10),size)
+    pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(h//4))-10),size)
+    pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(3*h//4))+10),size)
+
+def dice2six():
+    x,y,w,h = 1705,100,80,80
+    pygame.draw.rect(screen, DBLUE ,(x,y,w,h))
+    pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(h//2))),size)
+    pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(h//2))),size)
+    pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(h//4))-10),size)
+    pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(3*h//4))+10),size)
+    pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(h//4))-10),size)
+    pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(3*h//4))+10),size)
+
+#need to make the win function, probably just a line saying which player won and resseting the players, and the actual code to run the game
