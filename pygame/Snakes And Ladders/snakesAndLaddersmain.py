@@ -3,12 +3,14 @@ import pygame
 import pygame_menu
 import random
 import math
+from pygame import mixer
+import sys
 os.chdir(r'C:\Users\Windows 10\Desktop\Microsoft\Prezentacije\Programs for school\Code\Github\MatijaB-classwork\pygame\Snakes And Ladders')
-info = pygame.display.Info()
-SIZE = W, H = info.current_w, info.current_h
-screen = pygame.display.set_mode(SIZE)
 clock = pygame.time.Clock()
-size = 10
+size = 10 
+playsound = True
+WIN = False
+MENU = True
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
@@ -28,6 +30,7 @@ PINKISH = (233, 112, 193)
 class Tile(pygame.sprite.Sprite):                #board class
     def __init__(self):
         super().__init__()
+        self.color = LIGHTBLUE
         self.tilelist = []                    #list for the board                    #code to initialize the board, by using a list
         num = 100
         for i in range(0,10):
@@ -93,19 +96,19 @@ class Tile(pygame.sprite.Sprite):                #board class
             for j in i:
                 randomcolor = random.randint(0, 5)          #random color picker
                 if randomcolor == 0:
-                    color = LIGHTBLUE
+                    self.color = LIGHTBLUE
                 elif randomcolor == 1:
-                    color = LIGHTYELLOW
+                    self.color = LIGHTYELLOW
                 elif randomcolor == 2:
-                    color = LIGHTGREEN
+                    self.color = LIGHTGREEN
                 elif randomcolor == 3:
-                    color = LIGHTPURPLE
+                    self.color = LIGHTPURPLE
                 elif randomcolor == 4:
-                    color = LIGHTRED
+                    self.color = LIGHTRED
                 
                 #rectangle drawing code
-                pygame.draw.rect(screen, (color), (j[0], j[1], 159, 107))
-                tinytext = pygame.font.Font("papyrus",20)
+                pygame.draw.rect(screen, self.color, (j[0], j[1], 159, 107))
+                tinytext = pygame.font.Font("papyrus.TTF",20)
                 textSurf = tinytext.render(str(j[2]), True, BLACK)
                 screen.blit(textSurf, ((j[0]+30), (j[1]+30)))
         #code for drawing the ladders and snakes
@@ -116,7 +119,7 @@ class Tile(pygame.sprite.Sprite):                #board class
             pygame.draw.line(screen, (GREEN) , (x[0][0]+80,x[0][1]+56),(x[1][0]+80,x[1][1]+56),8)
 
 #player class
-class player(pygame.sprite.Sprite):
+class Player(pygame.sprite.Sprite):
     def __init__(self, T, color):
         self.val = 1
         self.posx = None
@@ -125,7 +128,8 @@ class player(pygame.sprite.Sprite):
         self.lader = T.ladder
         self.snek = T.snakes
         self.color = color
-        self.size = random.randint(50, 70)
+        self.radius = 50
+        self.size = 80
         for x in self.tile:                   #code to spawn the object at the starting position 1
             for y in x:
                 if self.val == y[2]:
@@ -177,9 +181,9 @@ class player(pygame.sprite.Sprite):
                     pass
     def draw(self, playerNum):
         if playerNum == 1:
-            pygame.draw.circle(screen,(self.color),(self.posx+60,self.posy+40),self.size)
+            pygame.draw.circle(screen, self.color,(self.posx+60,self.posy+40), self.radius)
         elif playerNum == 2:
-            pygame.draw.rect(screen,(self.color),(self.posx+60,self.posy+40),self.size)
+            pygame.draw.rect(screen, self.color,[self.posx,self.posy,80,80], 0)
 
 #the pain of writing 2 dice codes :(((((
 def dice1one():
@@ -272,4 +276,207 @@ def dice2six():
     pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(h//4))-10),size)
     pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(3*h//4))+10),size)
 
-#need to make the win function, probably just a line saying which player won and resseting the players, and the actual code to run the game
+def win():
+    global playsound
+    if player1.val == 100:
+        win_text = semitinytext.render("Player 1 wins!", True, BLACK)
+        screen.blit(win_text, (1605, 800))
+    elif player2.val == 100:
+        win_text = semitinytext.render("Player 2 wins!", True, BLACK)
+        screen.blit(win_text, (1605, 800))
+    if playsound:
+        win1.play()
+        playsound = False
+    player1.val = 1
+    player2.val = 1
+    for x in player1.tile:            #so we move by checking values of the places that we are at
+            for y in x:
+                if player1.val == y[2]:
+                    a = y
+                    player1.posx = y[0]
+                    player1.posy = y[1]
+    for x in player2.tile:            #so we move by checking values of the places that we are at
+            for y in x:
+                if player2.val == y[2]:
+                    a = y
+                    player2.posx = y[0]
+                    player2.posy = y[1]
+    player1.draw(1)
+    player2.draw(2)
+
+pygame.init()
+info = pygame.display.Info()
+SIZE = W, H = info.current_w, info.current_h
+screen = pygame.display.set_mode(SIZE)
+semitinytext = pygame.font.Font("papyrus.TTF",40)
+board = Tile()
+player1 = Player(board, BLUE)
+player2 = Player(board, RED)
+win1 = pygame.mixer.Sound("win.wav")
+screen.fill(BLACK)
+mixer.music.load("stillalive.wav")
+mixer.music.play(-1)
+turn = 1
+done = False
+roll = False
+while not done:
+    #if MENU == True:
+        #code for the menu
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            done = True
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                if roll == True:
+                    roll = False
+                else:
+                    roll = True
+            if event.key == pygame.K_ESCAPE:
+                pygame.quit()
+                sys.exit()
+            if event.key == pygame.K_TAB:
+                MENU = False
+
+    if not WIN:         #later add the condition for menu as well
+        board.drawing()
+        player1.draw(1)
+        player2.draw(2)
+        whoseturnitis = semitinytext.render("TURN:", True, BLACK)
+        screen.blit(whoseturnitis, (1650, 250))
+        howtoplay = semitinytext.render("Press SPACE to throw the dice", True, BLACK)
+        screen.blit(whoseturnitis, (1610, 950))
+        if turn == 1:
+            pygame.draw.circle(screen, player1.color, (1660, 300),80)
+        elif turn == 2:
+            pygame.draw.circle(screen, player2.color, (1660, 300),80)
+        if roll == True:
+            timeinterval = random.randint(10, 30)
+            for i in range(timeinterval):
+                no = random.randint(1, 6)
+                yes = random.randint(1, 6)
+                if no == 1 and yes == 1:
+                    dice1one()
+                    dice2one()
+                elif no == 1 and yes == 2:
+                    dice1one()
+                    dice2two()
+                elif no == 1 and yes == 3:
+                    dice1one()
+                    dice2three()
+                elif no == 1 and yes == 4:
+                    dice1one()
+                    dice2four()
+                elif no == 1 and yes == 5:
+                    dice1one()
+                    dice2five()
+                elif no == 1 and yes == 6:
+                    dice1one()
+                    dice2six()
+                elif no == 2 and yes == 1:
+                    dice1two()
+                    dice2one()
+                elif no == 2 and yes == 2:
+                    dice1two()
+                    dice2two()
+                elif no == 2 and yes == 3:
+                    dice1two()
+                    dice2three()
+                elif no == 2 and yes == 4:
+                    dice1two()
+                    dice2four()
+                elif no == 2 and yes == 5:
+                    dice1two()
+                    dice2five()
+                elif no == 2 and yes == 6:
+                    dice1two()
+                    dice2six()
+                elif no == 3 and yes == 1:
+                    dice1three()
+                    dice2one()
+                elif no == 3 and yes == 2:
+                    dice1three()
+                    dice2two()
+                elif no == 3 and yes == 3:
+                    dice1three()
+                    dice2three()
+                elif no == 3 and yes == 4:
+                    dice1three()
+                    dice2four()
+                elif no == 3 and yes == 5:
+                    dice1three()
+                    dice2five()
+                elif no == 3 and yes == 6:
+                    dice1three()
+                    dice2six()
+                elif no == 4 and yes == 1:
+                    dice1four()
+                    dice2one()
+                elif no == 4 and yes == 2:
+                    dice1four()
+                    dice2two()
+                elif no == 4 and yes == 3:
+                    dice1four()
+                    dice2three()
+                elif no == 4 and yes == 4:
+                    dice1four()
+                    dice2four()
+                elif no == 4 and yes == 5:
+                    dice1four()
+                    dice2five()
+                elif no == 4 and yes == 6:
+                    dice1four()
+                    dice2six()
+                elif no == 5 and yes == 1:
+                    dice1five()
+                    dice2one()
+                elif no == 5 and yes == 2:
+                    dice1five()
+                    dice2two()
+                elif no == 5 and yes == 3:
+                    dice1five()
+                    dice2three()
+                elif no == 5 and yes == 4:
+                    dice1five()
+                    dice2four()
+                elif no == 5 and yes == 5:
+                    dice1five()
+                    dice2five()
+                elif no == 5 and yes == 6:
+                    dice1five()
+                    dice2six()
+                elif no == 6 and yes == 1:
+                    dice1six()
+                    dice2one()
+                elif no == 6 and yes == 2:
+                    dice1six()
+                    dice2two()
+                elif no == 6 and yes == 3:
+                    dice1six()
+                    dice2three()
+                elif no == 6 and yes == 4:
+                    dice1six()
+                    dice2four()
+                elif no == 6 and yes == 5:
+                    dice1six()
+                    dice2five()
+                elif no == 6 and yes == 6:
+                    dice1six()
+                    dice2six()
+                pygame.time.wait(150)
+                pygame.display.update()
+            sum = no + yes
+            roll = False
+            if turn == 1:
+                player1.move(sum)
+                turn = 2
+                pygame.draw.circle(screen, player2.color, (1660, 300),80)
+            elif turn == 2:
+                player2.move(sum)
+                turn = 1
+                pygame.draw.circle(screen, player1.color, (1660, 300),80)
+    else:
+        win()
+    pygame.display.update()
+    clock.tick(60)
+pygame.quit()
+quit()
