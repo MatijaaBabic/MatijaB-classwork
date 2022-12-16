@@ -24,6 +24,7 @@ LIGHTGREEN = (143, 241, 143)
 LIGHTPURPLE = (211, 121, 199)
 DBLUE = (5, 66, 119)
 PINKISH = (233, 112, 193)
+GRAY = (109, 112, 114)
 
 
 
@@ -44,7 +45,7 @@ class Tile(pygame.sprite.Sprite):                #board class
         
         #ladder code
         self.ladder = []                #creating ladders, by having a list containing their x and y coordinates
-        self.counter = [1, 100]                      
+        self.counter = [100, 1]                      
         numlad = random.randint(4, 6)       #4 to 6 ladders per game, randomly chosen
         for i in range(numlad):
             check = True
@@ -71,25 +72,25 @@ class Tile(pygame.sprite.Sprite):                #board class
             self.snakes = []
             numsnek = random.randint(4,6)
             for i in range(numsnek):
-                check1 = True
-                while check1 == True:
+                check = True
+                while check == True:
                     randx = random.randint(1, 100)
                     randy = random.randint(1, 100)
-                    delta1 = randx - randy
-                    if delta1 > 10 or delta1 < -10:
+                    delta = randx - randy
+                    if delta > 10 or delta < -10:
                         if randx not in self.counter and randy not in self.counter:
-                            check1 = False
+                            check = False
                             self.counter.append(randx)
                             self.counter.append(randy)
-            c = None
-            d = None
-            for x in self.tilelist:
-                for y in x:
-                    if randx == y[2]:
-                        c = y
-                    if randy == y[2]:
-                        d = y
-            self.snakes.append((c,d))
+                a = None
+                b = None
+                for x in self.tilelist:
+                    for y in x:
+                        if randx == y[2]:
+                            a = y
+                        if randy == y[2]:
+                            b = y
+                self.snakes.append([a,b])
     
     def drawing(self):           
         for i in self.tilelist:                  #going through the list to get the values to draw the rectangles
@@ -138,11 +139,11 @@ class Player(pygame.sprite.Sprite):
                     self.posy = y[1]
     
     def move(self, e):          #function for movement
-        if (self.val - e) > 0:
-            self.val = self.val + e
+        if (self.val + e) > 0:
+            self.val += e
         else:
             print("N o.")   #just a fun little thing to show, as it wont appear in the actual window, just in the run bar
-        if self.val == 100:          #winning condition
+        if self.val >= 100 and self.val <107:          #winning condition
             print("You win :D")
             global WIN	 #variable which will tell the program when to present the winning screen
             WIN = True
@@ -308,17 +309,24 @@ pygame.init()
 info = pygame.display.Info()
 SIZE = W, H = info.current_w, info.current_h
 screen = pygame.display.set_mode(SIZE)
-semitinytext = pygame.font.Font("papyrus.TTF",40)
+semitinytext = pygame.font.Font("papyrus.TTF",25)
 board = Tile()
 player1 = Player(board, BLUE)
 player2 = Player(board, RED)
 win1 = pygame.mixer.Sound("win.wav")
-screen.fill(BLACK)
+screen.fill(GRAY)
+whoseturnitis = semitinytext.render("TURN:", True, BLACK)
+screen.blit(whoseturnitis, (1650, 250))
+howtoplay = semitinytext.render("Press SPACE to", True, BLACK)
+screen.blit(howtoplay, (1610, 950))
+howtoplay1 = semitinytext.render("throw the dice", True, BLACK)
+screen.blit(howtoplay1, (1610, 1000))
 mixer.music.load("stillalive.wav")
 mixer.music.play(-1)
 turn = 1
 done = False
 roll = False
+board.drawing()
 while not done:
     #if MENU == True:
         #code for the menu
@@ -338,19 +346,14 @@ while not done:
                 MENU = False
 
     if not WIN:         #later add the condition for menu as well
-        board.drawing()
         player1.draw(1)
         player2.draw(2)
-        whoseturnitis = semitinytext.render("TURN:", True, BLACK)
-        screen.blit(whoseturnitis, (1650, 250))
-        howtoplay = semitinytext.render("Press SPACE to throw the dice", True, BLACK)
-        screen.blit(whoseturnitis, (1610, 950))
         if turn == 1:
-            pygame.draw.circle(screen, player1.color, (1660, 300),80)
+            pygame.draw.circle(screen, player1.color, (1700, 400),50)
         elif turn == 2:
-            pygame.draw.circle(screen, player2.color, (1660, 300),80)
+            pygame.draw.circle(screen, player2.color, (1700, 400),50)
         if roll == True:
-            timeinterval = random.randint(10, 30)
+            timeinterval = random.randint(5, 20)
             for i in range(timeinterval):
                 no = random.randint(1, 6)
                 yes = random.randint(1, 6)
@@ -467,13 +470,15 @@ while not done:
             sum = no + yes
             roll = False
             if turn == 1:
+                
                 player1.move(sum)
                 turn = 2
-                pygame.draw.circle(screen, player2.color, (1660, 300),80)
+                pygame.draw.circle(screen, player2.color, (1700, 400),50)
             elif turn == 2:
+                
                 player2.move(sum)
                 turn = 1
-                pygame.draw.circle(screen, player1.color, (1660, 300),80)
+                pygame.draw.circle(screen, player1.color, (1700, 400),50)
     else:
         win()
     pygame.display.update()
