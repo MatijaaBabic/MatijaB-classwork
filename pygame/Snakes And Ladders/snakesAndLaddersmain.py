@@ -25,7 +25,7 @@ LIGHTPURPLE = (211, 121, 199)
 DBLUE = (5, 66, 119)
 PINKISH = (233, 112, 193)
 GRAY = (109, 112, 114)
-SNAKEGREEN = (17, 78, 32)
+SNAKEGREEN = (17, 100, 20)
 SEMIDARKBLUE = (11, 53, 164)
 
 class Tile(pygame.sprite.Sprite):                #board class
