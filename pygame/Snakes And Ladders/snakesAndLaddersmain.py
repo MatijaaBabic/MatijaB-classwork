@@ -25,8 +25,8 @@ LIGHTPURPLE = (211, 121, 199)
 DBLUE = (5, 66, 119)
 PINKISH = (233, 112, 193)
 GRAY = (109, 112, 114)
-
-
+SNAKEGREEN = (17, 78, 32)
+SEMIDARKBLUE = (11, 53, 164)
 
 class Tile(pygame.sprite.Sprite):                #board class
     def __init__(self):
@@ -117,7 +117,7 @@ class Tile(pygame.sprite.Sprite):                #board class
             pygame.draw.line(screen, (RED) , (x[0][0]+53,x[0][1]+56),(x[1][0]+53,x[1][1]+56),3)
             pygame.draw.line(screen, (RED) , (x[0][0]+106,x[0][1]+56),(x[1][0]+106,x[1][1]+56),3)
         for x in self.snakes:
-            pygame.draw.line(screen, (GREEN) , (x[0][0]+80,x[0][1]+56),(x[1][0]+80,x[1][1]+56),8)
+            pygame.draw.line(screen, (SNAKEGREEN) , (x[0][0]+80,x[0][1]+56),(x[1][0]+80,x[1][1]+56),8)
 
 #player class
 class Player(pygame.sprite.Sprite):
@@ -129,7 +129,7 @@ class Player(pygame.sprite.Sprite):
         self.lader = T.ladder
         self.snek = T.snakes
         self.color = color
-        self.radius = 50
+        self.radius = 35
         self.size = 80
         for x in self.tile:                   #code to spawn the object at the starting position 1
             for y in x:
@@ -184,47 +184,47 @@ class Player(pygame.sprite.Sprite):
         if playerNum == 1:
             pygame.draw.circle(screen, self.color,(self.posx+60,self.posy+40), self.radius)
         elif playerNum == 2:
-            pygame.draw.rect(screen, self.color,[self.posx,self.posy,80,80], 0)
+            pygame.draw.rect(screen, self.color,[self.posx+20,self.posy + 20,70,70], 0)
 
 #the pain of writing 2 dice codes :(((((
 def dice1one():
-	x,y,w,h = 1605,100,80,80
+	x,y,w,h = 1620,100,80,80
 	pygame.draw.rect(screen, DBLUE ,(x,y,w,h))
 	pygame.draw.circle(screen, PINKISH ,((x+(w//2)), (y+(h//2))), size)
 
 def dice2one():
-	x,y,w,h = 1705,100,80,80
+	x,y,w,h = 1720,100,80,80
 	pygame.draw.rect(screen, DBLUE ,(x,y,w,h))
 	pygame.draw.circle(screen, PINKISH ,((x+(w//2)), (y+(h//2))), size)
 
 def dice1two():
-	x,y,w,h = 1605,100,80,80
+	x,y,w,h = 1620,100,80,80
 	pygame.draw.rect(screen, DBLUE ,(x,y,w,h))
 	pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(h//2))),size)
 	pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(h//2))),size)
 
 def dice2two():
-	x,y,w,h = 1705,100,80,80
+	x,y,w,h = 1720,100,80,80
 	pygame.draw.rect(screen, DBLUE ,(x,y,w,h))
 	pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(h//2))),size)
 	pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(h//2))),size)
 
 def dice1three():
-	x,y,w,h = 1605,100,80,80
+	x,y,w,h = 1620,100,80,80
 	pygame.draw.rect(screen, DBLUE ,(x,y,w,h))
 	pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(3*h//4))),size)
 	pygame.draw.circle(screen, PINKISH ,((x+(w//2)), (y+(h//2))),size)
 	pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(h//4))),size)
 
 def dice2three():
-	x,y,w,h = 1705,100,80,80
+	x,y,w,h = 1720,100,80,80
 	pygame.draw.rect(screen, DBLUE ,(x,y,w,h))
 	pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(3*h//4))),size)
 	pygame.draw.circle(screen, PINKISH ,((x+(w//2)), (y+(h//2))),size)
 	pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(h//4))),size)
 
 def dice1four():
-    x,y,w,h = 1605,100,80,80
+    x,y,w,h = 1620,100,80,80
     pygame.draw.rect(screen, DBLUE ,(x,y,w,h))
     pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(h//4))),size)
     pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(3*h//4))),size)
@@ -232,7 +232,7 @@ def dice1four():
     pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(3*h//4))),size)
 
 def dice2four():
-    x,y,w,h = 1705,100,80,80
+    x,y,w,h = 1720,100,80,80
     pygame.draw.rect(screen, DBLUE ,(x,y,w,h))
     pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(h//4))),size)
     pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(3*h//4))),size)
@@ -240,7 +240,7 @@ def dice2four():
     pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(3*h//4))),size)
 
 def dice1five():
-    x,y,w,h = 1605,100,80,80
+    x,y,w,h = 1620,100,80,80
     pygame.draw.rect(screen, DBLUE ,(x,y,w,h))
     pygame.draw.circle(screen, PINKISH ,((x+(w//2)), (y+(h//2))),size)
     pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(h//4))),size)
@@ -249,7 +249,7 @@ def dice1five():
     pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(3*h//4))),size)
 
 def dice2five():
-    x,y,w,h = 1705,100,80,80
+    x,y,w,h = 1720,100,80,80
     pygame.draw.rect(screen, DBLUE ,(x,y,w,h))
     pygame.draw.circle(screen, PINKISH ,((x+(w//2)), (y+(h//2))),size)
     pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(h//4))),size)
@@ -258,7 +258,7 @@ def dice2five():
     pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(3*h//4))),size)
 
 def dice1six():
-    x,y,w,h = 1605,100,80,80
+    x,y,w,h = 1620,100,80,80
     pygame.draw.rect(screen, DBLUE ,(x,y,w,h))
     pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(h//2))),size)
     pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(h//2))),size)
@@ -268,7 +268,7 @@ def dice1six():
     pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(3*h//4))+10),size)
 
 def dice2six():
-    x,y,w,h = 1705,100,80,80
+    x,y,w,h = 1720,100,80,80
     pygame.draw.rect(screen, DBLUE ,(x,y,w,h))
     pygame.draw.circle(screen, PINKISH ,((x+(w//4)), (y+(h//2))),size)
     pygame.draw.circle(screen, PINKISH ,((x+(3*w//4)), (y+(h//2))),size)
@@ -279,12 +279,12 @@ def dice2six():
 
 def win():
     global playsound
-    if player1.val == 100:
+    if player1.val >= 100 and player1.val < 107:
         win_text = semitinytext.render("Player 1 wins!", True, BLACK)
-        screen.blit(win_text, (1605, 800))
-    elif player2.val == 100:
+        screen.blit(win_text, (1620, 800))
+    elif player2.val >= 100 and player2.val < 107:
         win_text = semitinytext.render("Player 2 wins!", True, BLACK)
-        screen.blit(win_text, (1605, 800))
+        screen.blit(win_text, (1620, 800))
     if playsound:
         win1.play()
         playsound = False
@@ -304,6 +304,10 @@ def win():
                     player2.posy = y[1]
     player1.draw(1)
     player2.draw(2)
+    global WIN
+    WIN = False
+    pygame.time.wait(8000)
+    board.drawing()
 
 pygame.init()
 info = pygame.display.Info()
@@ -311,7 +315,7 @@ SIZE = W, H = info.current_w, info.current_h
 screen = pygame.display.set_mode(SIZE)
 semitinytext = pygame.font.Font("papyrus.TTF",25)
 board = Tile()
-player1 = Player(board, BLUE)
+player1 = Player(board, SEMIDARKBLUE)
 player2 = Player(board, RED)
 win1 = pygame.mixer.Sound("win.wav")
 screen.fill(GRAY)
@@ -349,11 +353,11 @@ while not done:
         player1.draw(1)
         player2.draw(2)
         if turn == 1:
-            pygame.draw.circle(screen, player1.color, (1700, 400),50)
+            pygame.draw.circle(screen, player1.color, (1720, 400),50)
         elif turn == 2:
-            pygame.draw.circle(screen, player2.color, (1700, 400),50)
+            pygame.draw.circle(screen, player2.color, (1720, 400),50)
         if roll == True:
-            timeinterval = random.randint(5, 20)
+            timeinterval = random.randint(5, 15)
             for i in range(timeinterval):
                 no = random.randint(1, 6)
                 yes = random.randint(1, 6)
@@ -470,15 +474,15 @@ while not done:
             sum = no + yes
             roll = False
             if turn == 1:
-                
+                board.drawing()
                 player1.move(sum)
                 turn = 2
-                pygame.draw.circle(screen, player2.color, (1700, 400),50)
+                pygame.draw.circle(screen, player2.color, (1720, 400),50)
             elif turn == 2:
-                
+                board.drawing()
                 player2.move(sum)
                 turn = 1
-                pygame.draw.circle(screen, player1.color, (1700, 400),50)
+                pygame.draw.circle(screen, player1.color, (1720, 400),50)
     else:
         win()
     pygame.display.update()
