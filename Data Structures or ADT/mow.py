@@ -41,9 +41,10 @@ def remove(dictionary, remove):
     else:
         return False
 
+yn = input("Do you want to delete a word: ")
 
-
-
-removeWord = input("Which word do you want to remove: ")
-
-print(remove(mow, removeWord))
+if yn == "Yes" or yn == "Y":
+    while yn == "Yes" or yn == "Y":
+        removeWord = input("Which word do you want to remove: ")
+        print(remove(mow, removeWord))
+        yn = input("Do you want to delete a word: ")
